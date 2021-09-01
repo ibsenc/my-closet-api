@@ -28,4 +28,8 @@ public class ArticleService {
 
     return retrievedArticle;
   }
+
+  public void deleteArticle(String id) {
+    articleRepository.deleteById(id);
+  }
 }

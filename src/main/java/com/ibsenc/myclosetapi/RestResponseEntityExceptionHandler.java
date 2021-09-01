@@ -1,7 +1,7 @@
 package com.ibsenc.myclosetapi;
 
-import com.ibsenc.myclosetapi.data.ResourceNotFoundExceptionResponse;
-import com.ibsenc.myclosetapi.data.ValidationExceptionResponse;
+import com.ibsenc.myclosetapi.data.ResourceNotFoundResponse;
+import com.ibsenc.myclosetapi.data.ValidationViolationResponse;
 import com.ibsenc.myclosetapi.exceptions.ResourceNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,9 +14,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 /**
  * Class RestResponseEntityExceptionHandler is a global exception handler class. Includes
- *
  * @ExceptionHandler methods which handle each type of exception encountered.
- * <p>
+ *
  * Reference: https://zetcode.com/springboot/controlleradvice/
  */
 
@@ -30,13 +29,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
    * @returns a response containing a list of all violations.
    */
   @ExceptionHandler(value = {ConstraintViolationException.class})
-  protected ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException e) {
+  protected ResponseEntity<ValidationViolationResponse> handleConstraintViolation(ConstraintViolationException e) {
 
     List<String> errorMessages = e.getConstraintViolations().stream()
         .map((violation) -> violation.getMessage()).collect(
             Collectors.toList());
 
-    ValidationExceptionResponse response = new ValidationExceptionResponse();
+    ValidationViolationResponse response = new ValidationViolationResponse();
     response.setErrors(errorMessages);
 
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -46,8 +45,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
    * Handles ResourceNotFoundExceptions, including those for resource Article.
    */
   @ExceptionHandler(value = {ResourceNotFoundException.class})
-  protected ResponseEntity<Object> handleNotFound(ResourceNotFoundException e) {
-    return new ResponseEntity<>(new ResourceNotFoundExceptionResponse(e.getMessage()),
+  protected ResponseEntity<ResourceNotFoundResponse> handleNotFound(ResourceNotFoundException e) {
+    return new ResponseEntity<>(new ResourceNotFoundResponse(e.getMessage()),
         HttpStatus.BAD_REQUEST);
   }
 }

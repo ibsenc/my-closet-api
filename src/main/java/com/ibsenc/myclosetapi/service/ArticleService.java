@@ -17,13 +17,13 @@ public class ArticleService {
 
   public Article createArticle(Article newArticle) {
     newArticle.setId(UUID.randomUUID().toString());
-    Article article = articleRepository.save(newArticle);
+    final Article article = articleRepository.save(newArticle);
 
     return article;
   }
 
   public Article getArticle(String id) throws ArticleNotFoundException {
-    Article retrievedArticle = articleRepository.findById(id)
+    final Article retrievedArticle = articleRepository.findById(id)
         .orElseThrow(() -> new ArticleNotFoundException(id));
 
     return retrievedArticle;

@@ -32,7 +32,6 @@ public class ArticleController {
 
   @PostMapping("/article")
   public ResponseEntity<Article> createArticle(@RequestBody Article newArticle) {
-
     final Article article = articleService.createArticle(newArticle);
 
     return new ResponseEntity<>(article, HttpStatus.CREATED);
@@ -41,8 +40,7 @@ public class ArticleController {
   @SneakyThrows
   @GetMapping("/article/{id}")
   public ResponseEntity<Article> getArticle(@PathVariable String id) {
-
-    Article article = articleService.getArticle(id);
+    final Article article = articleService.getArticle(id);
 
     return new ResponseEntity<>(article, HttpStatus.OK);
   }

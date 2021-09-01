@@ -32,4 +32,20 @@ public class ArticleService {
   public void deleteArticle(String id) {
     articleRepository.deleteById(id);
   }
+
+  public Article updateArticle(Article article) throws ArticleNotFoundException {
+    Article existingArticle = getArticle(article.getId());
+
+    if (article.getName() != null) {
+      existingArticle.setName(article.getName());
+    }
+
+    if (article.getDescription() != null) {
+      existingArticle.setDescription(article.getDescription());
+    }
+
+    final Article updatedArticle = articleRepository.save(existingArticle);
+
+    return updatedArticle;
+  }
 }

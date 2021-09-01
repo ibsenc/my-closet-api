@@ -9,6 +9,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,10 +47,18 @@ public class ArticleController {
     return new ResponseEntity<>(article, HttpStatus.OK);
   }
 
-  @DeleteMapping("article/{id}")
+  @DeleteMapping("/article/{id}")
   public ResponseEntity<Article> deleteArticle(@PathVariable String id) {
     articleService.deleteArticle(id);
 
     return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @SneakyThrows
+  @PatchMapping("/article/{id}")
+  public ResponseEntity<Article> updateArticle(@RequestBody Article article) {
+    final Article updatedArticle = articleService.updateArticle(article);
+
+    return new ResponseEntity<>(updatedArticle, HttpStatus.OK);
   }
 }

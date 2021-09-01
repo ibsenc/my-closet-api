@@ -2,13 +2,17 @@ package com.ibsenc.myclosetapi.controller;
 
 import com.ibsenc.myclosetapi.service.ArticleService;
 import com.ibsenc.myclosetapi.model.Article;
+import javax.websocket.server.PathParam;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,4 +40,12 @@ public class ArticleController {
     return new ResponseEntity<>(article, HttpStatus.CREATED);
   }
 
+  @SneakyThrows
+  @GetMapping("/article/{id}")
+  public ResponseEntity<Article> getArticle(@PathVariable String id) {
+
+    Article article = articleService.getArticle(id);
+
+    return new ResponseEntity<>(article, HttpStatus.OK);
+  }
 }

@@ -1,9 +1,9 @@
 package com.ibsenc.myclosetapi.service;
 
+import com.ibsenc.myclosetapi.exceptions.ArticleNotFoundException;
 import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.repository.ArticleRepository;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,11 +16,16 @@ public class ArticleService {
   }
 
   public Article createArticle(Article newArticle) {
-    // This is where you would do your validation and throw and exception if any violations happen
-
     newArticle.setId(UUID.randomUUID().toString());
     Article article = articleRepository.save(newArticle);
 
     return article;
+  }
+
+  public Article getArticle(String id) throws ArticleNotFoundException {
+    Article retrievedArticle = articleRepository.findById(id)
+        .orElseThrow(() -> new ArticleNotFoundException(id));
+
+    return retrievedArticle;
   }
 }

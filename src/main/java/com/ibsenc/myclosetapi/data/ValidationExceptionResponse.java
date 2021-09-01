@@ -5,5 +5,6 @@ import lombok.Data;
 
 @Data
 public class ValidationExceptionResponse {
+
   private List<String> errors;
 }

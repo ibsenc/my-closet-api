@@ -6,5 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ResourceNotFoundExceptionResponse {
+
   private String error;
 }

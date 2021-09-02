@@ -2,7 +2,9 @@ package com.ibsenc.myclosetapi.controller;
 
 import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.service.ArticleService;
+import java.util.List;
 import lombok.SneakyThrows;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -60,5 +63,21 @@ public class ArticleController {
     final Article updatedArticle = articleService.updateArticle(article);
 
     return new ResponseEntity<>(updatedArticle, HttpStatus.OK);
+  }
+
+  /**
+   * Gets all articles using pagination and sorting. Takes in pageNo, pageSize, and sortBy as query
+   * parameters with default values. Sorting is ascending by default.
+   *
+   * Reference: https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
+   */
+  @GetMapping("/articles")
+  public ResponseEntity<List<Article>> getAllArticles(
+      @RequestParam(defaultValue = "0") Integer pageNo,
+      @RequestParam(defaultValue = "10") Integer pageSize,
+      @RequestParam(defaultValue = "name") String sortBy) {
+    List<Article> articleList = articleService.getAllArticles(pageNo, pageSize, sortBy);
+
+    return new ResponseEntity<>(articleList, new HttpHeaders(), HttpStatus.OK);
   }
 }

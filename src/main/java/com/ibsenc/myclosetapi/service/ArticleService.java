@@ -23,16 +23,13 @@ public class ArticleService {
 
   public Article createArticle(Article newArticle) {
     newArticle.setId(UUID.randomUUID().toString());
-    final Article article = articleRepository.save(newArticle);
 
-    return article;
+    return articleRepository.save(newArticle);
   }
 
   public Article getArticle(String id) throws ArticleNotFoundException {
-    final Article retrievedArticle = articleRepository.findById(id)
+    return articleRepository.findById(id)
         .orElseThrow(() -> new ArticleNotFoundException(id));
-
-    return retrievedArticle;
   }
 
   public void deleteArticle(String id) {
@@ -50,14 +47,11 @@ public class ArticleService {
       existingArticle.setDescription(article.getDescription());
     }
 
-    final Article updatedArticle = articleRepository.save(existingArticle);
-
-    return updatedArticle;
+    return articleRepository.save(existingArticle);
   }
 
   public List<Article> getAllArticles(Integer pageNo, Integer pageSize, String sortBy) {
     Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-
     Page<Article> pagedResult = articleRepository.findAll(paging);
 
     return pagedResult.hasContent() ? pagedResult.getContent() : new ArrayList<>();

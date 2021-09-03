@@ -29,25 +29,24 @@ public class ArticleController {
 
   @GetMapping("/ping")
   public ResponseEntity<String> index() {
+    // Use these headers to expect response type as json
     MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
     headers.set("Content-Type", "application/json");
-    ResponseEntity response = new ResponseEntity("{\"pong\": 123}", headers, HttpStatus.CREATED);
-    return response;
+
+    return new ResponseEntity("{\"pong\": 123}", headers, HttpStatus.CREATED);
   }
 
   @PostMapping("/article")
   public ResponseEntity<Article> createArticle(@RequestBody Article newArticle) {
-    final Article article = articleService.createArticle(newArticle);
 
-    return new ResponseEntity<>(article, HttpStatus.CREATED);
+    return new ResponseEntity<>(articleService.createArticle(newArticle), HttpStatus.CREATED);
   }
 
   @SneakyThrows
   @GetMapping("/article/{id}")
   public ResponseEntity<Article> getArticle(@PathVariable String id) {
-    final Article article = articleService.getArticle(id);
 
-    return new ResponseEntity<>(article, HttpStatus.OK);
+    return new ResponseEntity<>(articleService.getArticle(id), HttpStatus.OK);
   }
 
   @DeleteMapping("/article/{id}")
@@ -60,9 +59,8 @@ public class ArticleController {
   @SneakyThrows
   @PatchMapping("/article/{id}")
   public ResponseEntity<Article> updateArticle(@RequestBody Article article) {
-    final Article updatedArticle = articleService.updateArticle(article);
 
-    return new ResponseEntity<>(updatedArticle, HttpStatus.OK);
+    return new ResponseEntity<>(articleService.updateArticle(article), HttpStatus.OK);
   }
 
   /**

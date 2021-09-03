@@ -27,7 +27,6 @@ public class ImageService {
 
   @Value("${application.bucket.name}")
   private String bucketName;
-
   private AmazonS3Client s3Client;
 
   public ImageService(@Value("${cloud.aws.region.static}") String region) {

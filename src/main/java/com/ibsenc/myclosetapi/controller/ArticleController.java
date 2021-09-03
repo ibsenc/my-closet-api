@@ -1,6 +1,5 @@
 package com.ibsenc.myclosetapi.controller;
 
-import com.ibsenc.myclosetapi.data.UploadResponse;
 import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.service.ArticleService;
 import com.ibsenc.myclosetapi.service.ImageService;
@@ -30,7 +29,7 @@ public class ArticleController {
 
   private final ArticleService articleService;
   @Autowired
-  private ImageService service;
+  private ImageService imageService;
 
   public ArticleController(ArticleService articleService) {
     this.articleService = articleService;
@@ -75,7 +74,7 @@ public class ArticleController {
   /**
    * Gets all articles using pagination and sorting. Takes in pageNo, pageSize, and sortBy as query
    * parameters with default values. Sorting is ascending by default.
-   *
+   * <p>
    * Reference: https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
    */
   @GetMapping
@@ -89,17 +88,16 @@ public class ArticleController {
   }
 
   // Image Endpoints
-  @PostMapping("/image")
-  public ResponseEntity<UploadResponse> uploadImage(
+  @PostMapping("/{article_id}/image")
+  public ResponseEntity<Article> uploadImage(@PathVariable String article_id,
       @RequestParam(value = "file") MultipartFile file) {
-    final String imageId = service.uploadImage(file);
-    return new ResponseEntity<>(new UploadResponse(imageId), HttpStatus.OK);
+    return new ResponseEntity<>(articleService.addImageToArticle(article_id, file), HttpStatus.OK);
   }
 
   @SneakyThrows
   @GetMapping("/image/{fileName}")
   public ResponseEntity<ByteArrayResource> getImage(@PathVariable String fileName) {
-    byte[] data = service.getImage(fileName);
+    byte[] data = imageService.getImage(fileName);
     ByteArrayResource resource = new ByteArrayResource(data);
     return ResponseEntity
         .ok()
@@ -110,7 +108,7 @@ public class ArticleController {
 
   @DeleteMapping("/image/{fileName}")
   public ResponseEntity<String> deleteImage(@PathVariable String fileName) {
-    service.deleteImage(fileName);
+    imageService.deleteImage(fileName);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

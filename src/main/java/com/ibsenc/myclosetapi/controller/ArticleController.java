@@ -1,9 +1,13 @@
 package com.ibsenc.myclosetapi.controller;
 
+import com.ibsenc.myclosetapi.data.UploadResponse;
 import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.service.ArticleService;
+import com.ibsenc.myclosetapi.service.ImageService;
 import java.util.List;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +22,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
 
   private final ArticleService articleService;
+  @Autowired
+  private ImageService service;
 
   public ArticleController(ArticleService articleService) {
     this.articleService = articleService;
@@ -79,5 +86,31 @@ public class ArticleController {
     List<Article> articleList = articleService.getAllArticles(pageNo, pageSize, sortBy);
 
     return new ResponseEntity<>(articleList, new HttpHeaders(), HttpStatus.OK);
+  }
+
+  // Image Endpoints
+  @PostMapping("/image")
+  public ResponseEntity<UploadResponse> uploadImage(
+      @RequestParam(value = "file") MultipartFile file) {
+    final String imageId = service.uploadImage(file);
+    return new ResponseEntity<>(new UploadResponse(imageId), HttpStatus.OK);
+  }
+
+  @SneakyThrows
+  @GetMapping("/image/{fileName}")
+  public ResponseEntity<ByteArrayResource> getImage(@PathVariable String fileName) {
+    byte[] data = service.getImage(fileName);
+    ByteArrayResource resource = new ByteArrayResource(data);
+    return ResponseEntity
+        .ok()
+        .contentLength(data.length)
+        .header("Content-type", "image/jpeg")
+        .body(resource);
+  }
+
+  @DeleteMapping("/image/{fileName}")
+  public ResponseEntity<String> deleteImage(@PathVariable String fileName) {
+    service.deleteImage(fileName);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }

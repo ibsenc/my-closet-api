@@ -1,4 +1,4 @@
-package com.ibsenc.myclosetapi;
+package com.ibsenc.myclosetapi.exceptionhandlers;
 
 import com.ibsenc.myclosetapi.data.ResourceNotFoundResponse;
 import com.ibsenc.myclosetapi.data.ValidationViolationResponse;

@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/article")
 public class ArticleController {
 
   private final ArticleService articleService;
@@ -36,20 +38,20 @@ public class ArticleController {
     return new ResponseEntity("{\"pong\": 123}", headers, HttpStatus.CREATED);
   }
 
-  @PostMapping("/article")
+  @PostMapping
   public ResponseEntity<Article> createArticle(@RequestBody Article newArticle) {
 
     return new ResponseEntity<>(articleService.createArticle(newArticle), HttpStatus.CREATED);
   }
 
   @SneakyThrows
-  @GetMapping("/article/{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<Article> getArticle(@PathVariable String id) {
 
     return new ResponseEntity<>(articleService.getArticle(id), HttpStatus.OK);
   }
 
-  @DeleteMapping("/article/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<Article> deleteArticle(@PathVariable String id) {
     articleService.deleteArticle(id);
 
@@ -57,7 +59,7 @@ public class ArticleController {
   }
 
   @SneakyThrows
-  @PatchMapping("/article/{id}")
+  @PatchMapping("/{id}")
   public ResponseEntity<Article> updateArticle(@RequestBody Article article) {
 
     return new ResponseEntity<>(articleService.updateArticle(article), HttpStatus.OK);
@@ -69,7 +71,7 @@ public class ArticleController {
    *
    * Reference: https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
    */
-  @GetMapping("/articles")
+  @GetMapping
   public ResponseEntity<List<Article>> getAllArticles(
       @RequestParam(defaultValue = "0") Integer pageNo,
       @RequestParam(defaultValue = "10") Integer pageSize,

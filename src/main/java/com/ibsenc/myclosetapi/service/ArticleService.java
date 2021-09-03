@@ -47,6 +47,10 @@ public class ArticleService {
       existingArticle.setDescription(article.getDescription());
     }
 
+    if (article.getImageFileNames() != null) {
+      existingArticle.setImageFileNames(article.getImageFileNames());
+    }
+
     return articleRepository.save(existingArticle);
   }
 

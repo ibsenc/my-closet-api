@@ -1,4 +1,4 @@
-package com.ibsenc.myclosetapi.service;
+package com.ibsenc.myclosetapi.repository;
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.s3.AmazonS3;
@@ -23,13 +23,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
-public class ImageService {
+public class ImageRepository {
 
   @Value("${application.bucket.name}")
   private String bucketName;
   private AmazonS3Client s3Client;
 
-  public ImageService(@Value("${cloud.aws.region.static}") String region) {
+  public ImageRepository(@Value("${cloud.aws.region.static}") String region) {
     this.s3Client = (AmazonS3Client) AmazonS3ClientBuilder.standard()
         .withCredentials(new DefaultAWSCredentialsProviderChain())
         .withRegion(region)

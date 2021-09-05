@@ -2,7 +2,7 @@ package com.ibsenc.myclosetapi.controller;
 
 import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.service.ArticleService;
-import com.ibsenc.myclosetapi.service.ImageService;
+import com.ibsenc.myclosetapi.repository.ImageRepository;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ArticleController {
 
   private final ArticleService articleService;
   @Autowired
-  private ImageService imageService;
+  private ImageRepository imageService;
 
   public ArticleController(ArticleService articleService) {
     this.articleService = articleService;
@@ -89,9 +89,10 @@ public class ArticleController {
 
   // Image Endpoints
   @PostMapping("/{article_id}/image")
-  public ResponseEntity<Article> uploadImage(@PathVariable String article_id,
+  public ResponseEntity<Article> uploadArticleImage(
+      @PathVariable(value = "article_id") String articleId,
       @RequestParam(value = "file") MultipartFile file) {
-    return new ResponseEntity<>(articleService.addImageToArticle(article_id, file), HttpStatus.OK);
+    return new ResponseEntity<>(articleService.addImageToArticle(articleId, file), HttpStatus.OK);
   }
 
   @SneakyThrows
@@ -104,6 +105,14 @@ public class ArticleController {
         .contentLength(data.length)
         .header("Content-type", "image/jpeg")
         .body(resource);
+  }
+
+  @DeleteMapping("/{article_id}/image/{fileName}")
+  public ResponseEntity<String> deleteArticleImage(
+      @PathVariable(value = "article_id") String articleId,
+      @PathVariable String fileName) {
+    articleService.deleteImageFromArticle(articleId, fileName);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @DeleteMapping("/image/{fileName}")

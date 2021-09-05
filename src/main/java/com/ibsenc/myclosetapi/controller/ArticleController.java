@@ -1,8 +1,8 @@
 package com.ibsenc.myclosetapi.controller;
 
 import com.ibsenc.myclosetapi.model.Article;
-import com.ibsenc.myclosetapi.service.ArticleService;
 import com.ibsenc.myclosetapi.repository.ImageRepository;
+import com.ibsenc.myclosetapi.service.ArticleService;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,35 +46,31 @@ public class ArticleController {
 
   @PostMapping
   public ResponseEntity<Article> createArticle(@RequestBody Article newArticle) {
-
     return new ResponseEntity<>(articleService.createArticle(newArticle), HttpStatus.CREATED);
   }
 
   @SneakyThrows
   @GetMapping("/{id}")
   public ResponseEntity<Article> getArticle(@PathVariable String id) {
-
     return new ResponseEntity<>(articleService.getArticle(id), HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Article> deleteArticle(@PathVariable String id) {
     articleService.deleteArticle(id);
-
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @SneakyThrows
   @PatchMapping("/{id}")
   public ResponseEntity<Article> updateArticle(@RequestBody Article article) {
-
     return new ResponseEntity<>(articleService.updateArticle(article), HttpStatus.OK);
   }
 
   /**
    * Gets all articles using pagination and sorting. Takes in pageNo, pageSize, and sortBy as query
    * parameters with default values. Sorting is ascending by default.
-   * <p>
+   *
    * Reference: https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
    */
   @GetMapping
@@ -82,12 +78,12 @@ public class ArticleController {
       @RequestParam(defaultValue = "0") Integer pageNo,
       @RequestParam(defaultValue = "10") Integer pageSize,
       @RequestParam(defaultValue = "name") String sortBy) {
-    List<Article> articleList = articleService.getAllArticles(pageNo, pageSize, sortBy);
-
-    return new ResponseEntity<>(articleList, new HttpHeaders(), HttpStatus.OK);
+    return new ResponseEntity<>(articleService.getAllArticles(pageNo, pageSize, sortBy),
+        new HttpHeaders(), HttpStatus.OK);
   }
 
   // Image Endpoints
+
   @PostMapping("/{article_id}/image")
   public ResponseEntity<Article> uploadArticleImage(
       @PathVariable(value = "article_id") String articleId,

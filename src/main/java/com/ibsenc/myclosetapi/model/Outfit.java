@@ -12,16 +12,19 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "articles")
-public class Article {
+//@Table(name = "outfits")
+public class Outfit {
   @Id
   String id;
   @NotBlank(message = "Name is required.")
   String name;
   @NotNull(message = "Description cannot be null.")
   String description;
-  @Size(message = "Articles can have at most 4 images.", max = 4)
+  @Size(message = "Outfits can have at most 4 images.", max = 4)
   @ElementCollection
   @NotNull(message = "ImageFileNames field cannot be null.")
   private List<String> imageFileNames;
+//  @ElementCollection
+//  @NotNull(message = "List of articles cannot be null.")
+//  private List<Article> articles;
 }

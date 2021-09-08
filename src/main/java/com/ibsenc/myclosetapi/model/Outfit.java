@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Entity
 @Data
-//@Table(name = "outfits")
+@Table(name = "outfits")
 public class Outfit {
   @Id
   String id;
@@ -22,9 +22,9 @@ public class Outfit {
   String description;
   @Size(message = "Outfits can have at most 4 images.", max = 4)
   @ElementCollection
-  @NotNull(message = "ImageFileNames field cannot be null.")
+  @NotNull(message = "Image file names cannot be null.")
   private List<String> imageFileNames;
-//  @ElementCollection
-//  @NotNull(message = "List of articles cannot be null.")
-//  private List<Article> articles;
+  @ElementCollection
+  @NotNull(message = "Article ids cannot be null.")
+  private List<String> articleIds;
 }

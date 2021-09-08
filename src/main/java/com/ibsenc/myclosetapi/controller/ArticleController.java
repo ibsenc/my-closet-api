@@ -36,7 +36,7 @@ public class ArticleController {
   }
 
   @GetMapping("/ping")
-  public ResponseEntity<String> index() {
+  public ResponseEntity<String> pingArticle() {
     // Use these headers to expect response type as json
     MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
     headers.set("Content-Type", "application/json");

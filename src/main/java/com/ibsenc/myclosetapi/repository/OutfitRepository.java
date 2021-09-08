@@ -1,6 +1,5 @@
 package com.ibsenc.myclosetapi.repository;
 
-import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.model.Outfit;
 import org.springframework.data.jpa.repository.JpaRepository;
 

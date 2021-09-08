@@ -1,5 +1,6 @@
 package com.ibsenc.myclosetapi.service;
 
+import com.ibsenc.myclosetapi.exceptions.OutfitNotFoundException;
 import com.ibsenc.myclosetapi.model.Outfit;
 import com.ibsenc.myclosetapi.repository.OutfitRepository;
 import java.util.UUID;
@@ -18,5 +19,10 @@ public class OutfitService {
     newOutfit.setId(UUID.randomUUID().toString());
 
     return outfitRepository.save(newOutfit);
+  }
+
+  public Outfit getOutfit(String id) throws OutfitNotFoundException {
+    return outfitRepository.findById(id)
+        .orElseThrow(() -> new OutfitNotFoundException(id));
   }
 }

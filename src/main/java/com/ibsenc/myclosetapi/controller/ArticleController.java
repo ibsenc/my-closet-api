@@ -29,7 +29,7 @@ public class ArticleController {
 
   private final ArticleService articleService;
   @Autowired
-  private ImageRepository imageService;
+  private ImageRepository imageRepository;
 
   public ArticleController(ArticleService articleService) {
     this.articleService = articleService;
@@ -94,7 +94,7 @@ public class ArticleController {
   @SneakyThrows
   @GetMapping("/image/{fileName}")
   public ResponseEntity<ByteArrayResource> getImage(@PathVariable String fileName) {
-    byte[] data = imageService.getImage(fileName);
+    byte[] data = imageRepository.getImage(fileName);
     ByteArrayResource resource = new ByteArrayResource(data);
     return ResponseEntity
         .ok()
@@ -113,7 +113,7 @@ public class ArticleController {
 
   @DeleteMapping("/image/{fileName}")
   public ResponseEntity<String> deleteImage(@PathVariable String fileName) {
-    imageService.deleteImage(fileName);
+    imageRepository.deleteImage(fileName);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

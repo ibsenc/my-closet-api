@@ -24,6 +24,7 @@ public class Outfit {
   @ElementCollection
   @NotNull(message = "Image file names cannot be null.")
   private List<String> imageFileNames;
+  @Size(message = "Outfits can have at most 20 articles.", max = 20)
   @ElementCollection
   @NotNull(message = "Article ids cannot be null.")
   private List<String> articleIds;

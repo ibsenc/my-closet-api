@@ -28,8 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ArticleController {
 
   private final ArticleService articleService;
-  @Autowired
-  private ImageRepository imageRepository;
 
   public ArticleController(ArticleService articleService) {
     this.articleService = articleService;
@@ -82,8 +80,7 @@ public class ArticleController {
         new HttpHeaders(), HttpStatus.OK);
   }
 
-  // Image Endpoints
-
+  // Article Image Endpoints
   @PostMapping("/{article_id}/image")
   public ResponseEntity<Article> uploadArticleImage(
       @PathVariable(value = "article_id") String articleId,
@@ -91,29 +88,11 @@ public class ArticleController {
     return new ResponseEntity<>(articleService.addImageToArticle(articleId, file), HttpStatus.OK);
   }
 
-  @SneakyThrows
-  @GetMapping("/image/{fileName}")
-  public ResponseEntity<ByteArrayResource> getImage(@PathVariable String fileName) {
-    byte[] data = imageRepository.getImage(fileName);
-    ByteArrayResource resource = new ByteArrayResource(data);
-    return ResponseEntity
-        .ok()
-        .contentLength(data.length)
-        .header("Content-type", "image/jpeg")
-        .body(resource);
-  }
-
   @DeleteMapping("/{article_id}/image/{fileName}")
   public ResponseEntity<String> deleteArticleImage(
       @PathVariable(value = "article_id") String articleId,
       @PathVariable String fileName) {
     articleService.deleteImageFromArticle(articleId, fileName);
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
-
-  @DeleteMapping("/image/{fileName}")
-  public ResponseEntity<String> deleteImage(@PathVariable String fileName) {
-    imageRepository.deleteImage(fileName);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

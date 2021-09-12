@@ -10,12 +10,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -92,5 +95,35 @@ public class OutfitService {
     Page<Outfit> pagedResult = outfitRepository.findAll(paging);
 
     return pagedResult.hasContent() ? pagedResult.getContent() : new ArrayList<>();
+  }
+
+  @SneakyThrows
+  public Outfit addImageToOutfit(String outfitId, MultipartFile file) {
+    final Outfit existingOutfit = this.getOutfit(outfitId);
+
+    final String imageFileName = imageRepository.uploadImage(file);
+
+    final List<String> outfitImageNames = existingOutfit.getImageFileNames();
+    outfitImageNames.add(imageFileName);
+    existingOutfit.setImageFileNames(outfitImageNames);
+
+    return this.updateOutfit(existingOutfit);
+  }
+
+  public void deleteImageFromOutfit(String outfitId, String fileName)
+      throws OutfitNotFoundException {
+    // Remove image from the article's list of imageFileNames
+    final Outfit outfit = this.getOutfit(outfitId);
+
+    List<String> filteredFileNames = outfit.getImageFileNames()
+        .stream()
+        .filter(f -> !fileName.equals(f))
+        .collect(Collectors.toList());
+
+    outfit.setImageFileNames(filteredFileNames);
+    outfitRepository.save(outfit);
+
+    // Delete image from S3
+    imageRepository.deleteImage(fileName);
   }
 }

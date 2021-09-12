@@ -1,11 +1,13 @@
 package com.ibsenc.myclosetapi.controller;
 
+import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.model.Outfit;
 import com.ibsenc.myclosetapi.repository.ImageRepository;
 import com.ibsenc.myclosetapi.service.OutfitService;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +22,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/outfit")
 public class OutfitController {
 
   private final OutfitService outfitService;
-//  @Autowired
-//  private ImageRepository imageRepository;
 
   public OutfitController(OutfitService outfitService) {
     this.outfitService = outfitService;
@@ -80,7 +81,23 @@ public class OutfitController {
         new HttpHeaders(), HttpStatus.OK);
   }
 
-  // TODO: AddNewArticleToOutfit
+  // Outfit Image Endpoints
+  @PostMapping("/{outfit_id}/image")
+  public ResponseEntity<Outfit> uploadOutfitImage(
+      @PathVariable(value = "outfit_id") String outfitId,
+      @RequestParam(value = "file") MultipartFile file) {
+    return new ResponseEntity<>(outfitService.addImageToOutfit(outfitId, file), HttpStatus.OK);
+  }
 
+  @SneakyThrows
+  @DeleteMapping("/{outfit_id}/image/{fileName}")
+  public ResponseEntity<String> deleteOutfitImage(
+      @PathVariable(value = "outfit_id") String outfitId,
+      @PathVariable String fileName) {
+    outfitService.deleteImageFromOutfit(outfitId, fileName);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  // TODO: AddNewArticleToOutfit
   // TODO: RemoveArticleFromOutfit
 }

@@ -42,7 +42,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
   }
 
   /**
-   * Handles ResourceNotFoundExceptions, including those for resource Article.
+   * Handles ResourceNotFoundExceptions, including those for resource Article and Image.
    */
   @ExceptionHandler(value = {ResourceNotFoundException.class})
   protected ResponseEntity<ResourceNotFoundResponse> handleNotFound(ResourceNotFoundException e) {

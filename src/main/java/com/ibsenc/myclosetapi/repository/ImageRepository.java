@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
+import com.ibsenc.myclosetapi.exceptions.ImageNotFoundException;
 import com.ibsenc.myclosetapi.exceptions.InvalidFileTypeException;
 import com.ibsenc.myclosetapi.exceptions.InvalidInputException;
 import java.io.File;
@@ -53,7 +54,11 @@ public class ImageRepository {
     return "." + type.split("/")[1];
   }
 
-  public byte[] getImage(String fileName) throws IOException {
+  public byte[] getImage(String fileName) throws IOException, ImageNotFoundException {
+    if (!s3Client.doesObjectExist(bucketName, fileName)) {
+      throw new ImageNotFoundException(fileName);
+    }
+
     S3Object s3Object = s3Client.getObject(bucketName, fileName);
     S3ObjectInputStream inputStream = s3Object.getObjectContent();
     return IOUtils.toByteArray(inputStream);

@@ -1,14 +1,17 @@
 package com.ibsenc.myclosetapi.service;
 
 import com.ibsenc.myclosetapi.exceptions.ArticleNotFoundException;
+import com.ibsenc.myclosetapi.exceptions.ResourceNotFoundException;
 import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.repository.ArticleRepository;
 import com.ibsenc.myclosetapi.repository.ImageRepository;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,19 +19,22 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 public class ArticleService {
 
   private final ArticleRepository articleRepository;
-  private final ImageRepository imageService;
+  private final ImageRepository imageRepository;
 
-  public ArticleService(ArticleRepository articleRepository, ImageRepository imageService) {
+  public ArticleService(ArticleRepository articleRepository, ImageRepository imageRepository) {
     this.articleRepository = articleRepository;
-    this.imageService = imageService;
+    this.imageRepository = imageRepository;
   }
 
   public Article createArticle(Article newArticle) {
     newArticle.setId(UUID.randomUUID().toString());
+    // Prevents setting of images in create endpoint
+    newArticle.setImageFileNames(new ArrayList<>());
 
     return articleRepository.save(newArticle);
   }
@@ -39,10 +45,18 @@ public class ArticleService {
   }
 
   public void deleteArticle(String id) {
+    // Delete all images associated with the article
+    try {
+      getArticle(id).getImageFileNames().stream()
+          .forEach(imageFile -> imageRepository.deleteImage(imageFile));
+    } catch (ArticleNotFoundException e) {
+      log.error(e.getMessage());
+    }
     articleRepository.deleteById(id);
   }
 
-  public Article updateArticle(Article article) throws ArticleNotFoundException {
+  public Article updateArticle(Article article)
+      throws ResourceNotFoundException, IOException {
     final Article existingArticle = getArticle(article.getId());
 
     if (article.getName() != null) {
@@ -54,6 +68,9 @@ public class ArticleService {
     }
 
     if (article.getImageFileNames() != null) {
+      for (String imageFileName : article.getImageFileNames()) {
+        imageRepository.getImage(imageFileName);
+      }
       existingArticle.setImageFileNames(article.getImageFileNames());
     }
 
@@ -64,7 +81,7 @@ public class ArticleService {
   public Article addImageToArticle(String articleId, MultipartFile file) {
     final Article existingArticle = this.getArticle(articleId);
 
-    final String imageFileName = imageService.uploadImage(file);
+    final String imageFileName = imageRepository.uploadImage(file);
 
     final List<String> articleImageNames = existingArticle.getImageFileNames();
     articleImageNames.add(imageFileName);
@@ -94,6 +111,6 @@ public class ArticleService {
     articleRepository.save(article);
 
     // Delete image from S3
-    imageService.deleteImage(fileName);
+    imageRepository.deleteImage(fileName);
   }
 }

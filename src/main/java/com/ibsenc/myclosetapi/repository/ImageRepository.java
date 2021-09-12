@@ -1,7 +1,6 @@
 package com.ibsenc.myclosetapi.repository;
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +26,7 @@ public class ImageRepository {
 
   @Value("${application.bucket.name}")
   private String bucketName;
-  private AmazonS3Client s3Client;
+  private final AmazonS3Client s3Client;
 
   public ImageRepository(@Value("${cloud.aws.region.static}") String region) {
     this.s3Client = (AmazonS3Client) AmazonS3ClientBuilder.standard()

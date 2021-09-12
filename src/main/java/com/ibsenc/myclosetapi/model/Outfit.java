@@ -14,6 +14,7 @@ import lombok.Data;
 @Data
 @Table(name = "outfits")
 public class Outfit {
+
   @Id
   String id;
   @NotBlank(message = "Name is required.")

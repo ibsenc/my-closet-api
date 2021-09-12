@@ -2,7 +2,6 @@ package com.ibsenc.myclosetapi.service;
 
 import com.ibsenc.myclosetapi.exceptions.OutfitNotFoundException;
 import com.ibsenc.myclosetapi.exceptions.ResourceNotFoundException;
-import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.model.Outfit;
 import com.ibsenc.myclosetapi.repository.ImageRepository;
 import com.ibsenc.myclosetapi.repository.OutfitRepository;
@@ -82,7 +81,7 @@ public class OutfitService {
     // Adds existing article(s) to outfit
     if (outfit.getArticleIds() != null) {
       for (String articleId : outfit.getArticleIds()) {
-          articleService.getArticle(articleId);
+        articleService.getArticle(articleId);
       }
       existingOutfit.setArticleIds(outfit.getArticleIds());
     }

@@ -1,12 +1,9 @@
 package com.ibsenc.myclosetapi.controller;
 
 import com.ibsenc.myclosetapi.model.Article;
-import com.ibsenc.myclosetapi.repository.ImageRepository;
 import com.ibsenc.myclosetapi.service.ArticleService;
 import java.util.List;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +65,7 @@ public class ArticleController {
   /**
    * Gets all articles using pagination and sorting. Takes in pageNo, pageSize, and sortBy as query
    * parameters with default values. Sorting is ascending by default.
-   *
+   * <p>
    * Reference: https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
    */
   @GetMapping

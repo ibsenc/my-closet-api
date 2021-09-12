@@ -14,8 +14,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 /**
  * Class RestResponseEntityExceptionHandler is a global exception handler class. Includes
- * @ExceptionHandler methods which handle each type of exception encountered.
  *
+ * @ExceptionHandler methods which handle each type of exception encountered.
+ * <p>
  * Reference: https://zetcode.com/springboot/controlleradvice/
  */
 
@@ -29,7 +30,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
    * @returns a response containing a list of all violations.
    */
   @ExceptionHandler(value = {ConstraintViolationException.class})
-  protected ResponseEntity<ValidationViolationResponse> handleConstraintViolation(ConstraintViolationException e) {
+  protected ResponseEntity<ValidationViolationResponse> handleConstraintViolation(
+      ConstraintViolationException e) {
 
     List<String> errorMessages = e.getConstraintViolations().stream()
         .map((violation) -> violation.getMessage()).collect(

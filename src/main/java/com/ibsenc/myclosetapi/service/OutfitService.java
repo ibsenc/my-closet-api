@@ -79,7 +79,7 @@ public class OutfitService {
       existingOutfit.setImageFileNames(outfit.getImageFileNames());
     }
 
-    // Adds an existing article to outfit
+    // Adds existing article(s) to outfit
     if (outfit.getArticleIds() != null) {
       for (String articleId : outfit.getArticleIds()) {
           articleService.getArticle(articleId);
@@ -112,7 +112,7 @@ public class OutfitService {
 
   public void deleteImageFromOutfit(String outfitId, String fileName)
       throws OutfitNotFoundException {
-    // Remove image from the article's list of imageFileNames
+    // Remove image from the outfit's list of imageFileNames
     final Outfit outfit = this.getOutfit(outfitId);
 
     List<String> filteredFileNames = outfit.getImageFileNames()
@@ -125,5 +125,19 @@ public class OutfitService {
 
     // Delete image from S3
     imageRepository.deleteImage(fileName);
+  }
+
+  public void removeArticleFromOutfit(String outfitId, String articleId)
+      throws OutfitNotFoundException {
+    // Remove article with articleId from the outfit's list of articleIds
+    final Outfit outfit = this.getOutfit(outfitId);
+
+    List<String> filteredArticleIds = outfit.getArticleIds()
+        .stream()
+        .filter(id -> !articleId.equals(id))
+        .collect(Collectors.toList());
+
+    outfit.setArticleIds(filteredArticleIds);
+    outfitRepository.save(outfit);
   }
 }

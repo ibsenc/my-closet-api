@@ -1,13 +1,9 @@
 package com.ibsenc.myclosetapi.controller;
 
-import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.model.Outfit;
-import com.ibsenc.myclosetapi.repository.ImageRepository;
 import com.ibsenc.myclosetapi.service.OutfitService;
 import java.util.List;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,7 +65,7 @@ public class OutfitController {
   /**
    * Gets all outfits using pagination and sorting. Takes in pageNo, pageSize, and sortBy as query
    * parameters with default values. Sorting is ascending by default.
-   *
+   * <p>
    * Reference: https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
    */
   @GetMapping
@@ -98,6 +94,12 @@ public class OutfitController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  // TODO: AddNewArticleToOutfit
-  // TODO: RemoveArticleFromOutfit
+  @SneakyThrows
+  @DeleteMapping("/{outfit_id}/article/{article_id}")
+  public ResponseEntity<String> removeArticleFromOutfit(
+      @PathVariable(value = "outfit_id") String outfitId,
+      @PathVariable(value = "article_id") String articleId) {
+    outfitService.removeArticleFromOutfit(outfitId, articleId);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 }

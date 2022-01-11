@@ -1,6 +1,8 @@
 package com.ibsenc.myclosetapi.service;
 
+import com.ibsenc.myclosetapi.data.Constants;
 import com.ibsenc.myclosetapi.exceptions.ArticleNotFoundException;
+import com.ibsenc.myclosetapi.exceptions.InvalidInputException;
 import com.ibsenc.myclosetapi.exceptions.ResourceNotFoundException;
 import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.repository.ArticleRepository;
@@ -32,6 +34,12 @@ public class ArticleService {
   }
 
   public Article createArticle(Article newArticle) {
+    if (!Constants.ARTICLE_CATEGORIES.contains(newArticle.getCategory().toUpperCase())) {
+      throw new InvalidInputException(
+          String.format("Found unsupported article category: '%s'", newArticle.getCategory()));
+    }
+
+    newArticle.setCategory(newArticle.getCategory().toUpperCase());
     newArticle.setId(UUID.randomUUID().toString());
     // Prevents setting of images in create endpoint
     newArticle.setImageFileNames(new ArrayList<>());
@@ -72,6 +80,15 @@ public class ArticleService {
         imageRepository.getImage(imageFileName);
       }
       existingArticle.setImageFileNames(article.getImageFileNames());
+    }
+
+    if (article.getCategory() != null) {
+      if (!Constants.ARTICLE_CATEGORIES.contains(article.getCategory().toUpperCase())) {
+        throw new InvalidInputException(
+            String.format("Found unsupported article category: '%s'", article.getCategory()));
+      }
+
+      existingArticle.setCategory(article.getCategory().toUpperCase());
     }
 
     return articleRepository.save(existingArticle);

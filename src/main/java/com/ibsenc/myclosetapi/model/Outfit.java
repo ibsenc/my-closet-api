@@ -16,11 +16,11 @@ import lombok.Data;
 public class Outfit {
 
   @Id
-  String id;
+  private String id;
   @NotBlank(message = "Name is required.")
-  String name;
+  private String name;
   @NotNull(message = "Description cannot be null.")
-  String description;
+  private String description;
   @Size(message = "Outfits can have at most 4 images.", max = 4)
   @ElementCollection
   @NotNull(message = "Image file names cannot be null.")

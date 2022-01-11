@@ -106,6 +106,10 @@ public class ArticleService {
       existingArticle.setColor(article.getColor());
     }
 
+    if (article.getBrand() != null) {
+      existingArticle.setBrand(article.getBrand());
+    }
+
     if (article.getSeasons() != null) {
       for (String season : article.getSeasons()) {
         if (!Constants.SEASONS.contains(season.toUpperCase())) {

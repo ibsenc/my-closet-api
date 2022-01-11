@@ -33,6 +33,7 @@ public class Article {
   private String category;
 
   private String color;
+  private String brand;
 
   @Size(message = "Articles can have at most 4 seasons.", max = 4)
   @ElementCollection

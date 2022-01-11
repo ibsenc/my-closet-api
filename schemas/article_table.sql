@@ -5,5 +5,6 @@ CREATE TABLE articles (
     imageFileNames VARCHAR ARRAY[4],
     category VARCHAR NOT NULL,
     color VARCHAR NULL,
+    seasons VARCHAR ARRAY[4],
     PRIMARY KEY (id)
 );

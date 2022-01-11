@@ -17,15 +17,24 @@ public class Article {
 
   @Id
   private String id;
+
   @NotBlank(message = "Name is required.")
   private String name;
+
   @NotNull(message = "Description cannot be null.")
   private String description;
+
   @Size(message = "Articles can have at most 4 images.", max = 4)
   @ElementCollection
   @NotNull(message = "ImageFileNames field cannot be null.")
   private List<String> imageFileNames;
+
   @NotNull(message = "Category cannot be null.")
   private String category;
+
   private String color;
+
+  @Size(message = "Articles can have at most 4 seasons.", max = 4)
+  @ElementCollection
+  private List<String> seasons;
 }

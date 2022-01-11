@@ -41,8 +41,19 @@ public class ArticleService {
 
     newArticle.setCategory(newArticle.getCategory().toUpperCase());
     newArticle.setId(UUID.randomUUID().toString());
+
     // Prevents setting of images in create endpoint
     newArticle.setImageFileNames(new ArrayList<>());
+
+    List<String> upperCaseSeasons =
+        newArticle.getSeasons().stream()
+            .map(s-> {
+              String season = s.toUpperCase();
+              return season;
+            })
+            .collect(Collectors.toList());
+
+    newArticle.setSeasons(upperCaseSeasons);
 
     return articleRepository.save(newArticle);
   }
@@ -93,6 +104,25 @@ public class ArticleService {
 
     if (article.getColor() != null) {
       existingArticle.setColor(article.getColor());
+    }
+
+    if (article.getSeasons() != null) {
+      for (String season : article.getSeasons()) {
+        if (!Constants.SEASONS.contains(season.toUpperCase())) {
+          throw new InvalidInputException(
+              String.format("Found unsupported season: '%s'", season.toUpperCase()));
+        }
+      }
+
+      List<String> upperCaseSeasons =
+          article.getSeasons().stream()
+              .map(s-> {
+                          String season = s.toUpperCase();
+                          return season;
+                        })
+              .collect(Collectors.toList());
+
+      existingArticle.setSeasons(upperCaseSeasons);
     }
 
     return articleRepository.save(existingArticle);

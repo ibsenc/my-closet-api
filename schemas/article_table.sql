@@ -7,5 +7,6 @@ CREATE TABLE articles (
     color VARCHAR NULL,
     seasons VARCHAR ARRAY[4],
     brand VARCHAR NULL,
+    size VARCHAR NULL,
     PRIMARY KEY (id)
 );

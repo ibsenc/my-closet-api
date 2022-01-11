@@ -34,6 +34,7 @@ public class Article {
 
   private String color;
   private String brand;
+  private String size;
 
   @Size(message = "Articles can have at most 4 seasons.", max = 4)
   @ElementCollection

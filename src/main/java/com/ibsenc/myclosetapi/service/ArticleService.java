@@ -110,6 +110,10 @@ public class ArticleService {
       existingArticle.setBrand(article.getBrand());
     }
 
+    if (article.getSize() != null) {
+      existingArticle.setSize(article.getSize());
+    }
+
     if (article.getSeasons() != null) {
       for (String season : article.getSeasons()) {
         if (!Constants.SEASONS.contains(season.toUpperCase())) {

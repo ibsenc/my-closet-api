@@ -71,6 +71,14 @@ public class OutfitService {
       existingOutfit.setDescription(outfit.getDescription());
     }
 
+    if (outfit.getOccasion() != null) {
+      existingOutfit.setOccasion(outfit.getOccasion());
+    }
+
+    if (outfit.getStyle() != null) {
+      existingOutfit.setStyle(outfit.getStyle());
+    }
+
     if (outfit.getImageFileNames() != null) {
       for (String imageFileName : outfit.getImageFileNames()) {
         imageRepository.getImage(imageFileName);

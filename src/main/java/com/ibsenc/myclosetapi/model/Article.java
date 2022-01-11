@@ -25,6 +25,7 @@ public class Article {
   @ElementCollection
   @NotNull(message = "ImageFileNames field cannot be null.")
   private List<String> imageFileNames;
-  @NotNull(message = "ArticleCategory cannot be null.")
+  @NotNull(message = "Category cannot be null.")
   private String category;
+  private String color;
 }

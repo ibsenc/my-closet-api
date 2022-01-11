@@ -91,6 +91,10 @@ public class ArticleService {
       existingArticle.setCategory(article.getCategory().toUpperCase());
     }
 
+    if (article.getColor() != null) {
+      existingArticle.setColor(article.getColor());
+    }
+
     return articleRepository.save(existingArticle);
   }
 

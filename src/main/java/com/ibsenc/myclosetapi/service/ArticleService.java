@@ -42,6 +42,9 @@ public class ArticleService {
     newArticle.setCategory(newArticle.getCategory().toUpperCase());
     newArticle.setId(UUID.randomUUID().toString());
 
+    // Prevents setting of datesWorn in create endpoint
+    newArticle.setDatesWorn(new ArrayList<>());
+
     // Prevents setting of images in create endpoint
     newArticle.setImageFileNames(new ArrayList<>());
 

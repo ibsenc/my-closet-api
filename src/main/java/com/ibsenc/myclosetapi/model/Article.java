@@ -1,5 +1,6 @@
 package com.ibsenc.myclosetapi.model;
 
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -39,4 +40,7 @@ public class Article {
   @Size(message = "Articles can have at most 4 seasons.", max = 4)
   @ElementCollection
   private List<String> seasons;
+
+  @ElementCollection
+  private List<LocalDate> datesWorn;
 }

@@ -92,4 +92,11 @@ public class ArticleController {
     articleService.deleteImageFromArticle(articleId, fileName);
     return new ResponseEntity<>(HttpStatus.OK);
   }
+
+  // Add date worn
+
+
+  // Remove date worn
+
+
 }

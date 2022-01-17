@@ -30,6 +30,11 @@ public class OutfitController {
     this.outfitService = outfitService;
   }
 
+  @PostMapping
+  public ResponseEntity<Outfit> createOutfit(@RequestBody Outfit newOutfit) {
+    return new ResponseEntity<>(outfitService.createOutfit(newOutfit), HttpStatus.CREATED);
+  }
+
   @GetMapping("/ping")
   public ResponseEntity<String> pingOutfit() {
     // Use these headers to expect response type as json
@@ -37,11 +42,6 @@ public class OutfitController {
     headers.set("Content-Type", "application/json");
 
     return new ResponseEntity("{\"pong\": 123}", headers, HttpStatus.CREATED);
-  }
-
-  @PostMapping
-  public ResponseEntity<Outfit> createOutfit(@RequestBody Outfit newOutfit) {
-    return new ResponseEntity<>(outfitService.createOutfit(newOutfit), HttpStatus.CREATED);
   }
 
   @SneakyThrows

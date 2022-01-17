@@ -6,5 +6,6 @@ CREATE TABLE outfits (
     articleIds VARCHAR ARRAY[20],
     occasion VARCHAR NULL,
     style VARCHAR NULL,
+    seasons VARCHAR ARRAY[4],
     PRIMARY KEY (id)
 );

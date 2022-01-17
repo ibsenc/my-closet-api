@@ -37,7 +37,7 @@ public class Outfit {
   private String occasion;
   private String style;
 
-//  @Size(message = "Outfits can have at most 4 seasons.", max = 4)
-//  @ElementCollection
-//  private List<String> seasons;
+  @Size(message = "Outfits can have at most 4 seasons.", max = 4)
+  @ElementCollection
+  private List<String> seasons;
 }

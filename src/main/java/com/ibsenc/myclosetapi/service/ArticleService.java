@@ -1,6 +1,8 @@
 package com.ibsenc.myclosetapi.service;
 
+import com.ibsenc.myclosetapi.data.Constants;
 import com.ibsenc.myclosetapi.exceptions.ArticleNotFoundException;
+import com.ibsenc.myclosetapi.exceptions.InvalidInputException;
 import com.ibsenc.myclosetapi.exceptions.ResourceNotFoundException;
 import com.ibsenc.myclosetapi.model.Article;
 import com.ibsenc.myclosetapi.repository.ArticleRepository;
@@ -32,9 +34,26 @@ public class ArticleService {
   }
 
   public Article createArticle(Article newArticle) {
+    if (!Constants.ARTICLE_CATEGORIES.contains(newArticle.getCategory().toUpperCase())) {
+      throw new InvalidInputException(
+          String.format("Found unsupported article category: '%s'", newArticle.getCategory()));
+    }
+
+    newArticle.setCategory(newArticle.getCategory().toUpperCase());
     newArticle.setId(UUID.randomUUID().toString());
+
     // Prevents setting of images in create endpoint
     newArticle.setImageFileNames(new ArrayList<>());
+
+    List<String> upperCaseSeasons =
+        newArticle.getSeasons().stream()
+            .map(s-> {
+              String season = s.toUpperCase();
+              return season;
+            })
+            .collect(Collectors.toList());
+
+    newArticle.setSeasons(upperCaseSeasons);
 
     return articleRepository.save(newArticle);
   }
@@ -72,6 +91,46 @@ public class ArticleService {
         imageRepository.getImage(imageFileName);
       }
       existingArticle.setImageFileNames(article.getImageFileNames());
+    }
+
+    if (article.getCategory() != null) {
+      if (!Constants.ARTICLE_CATEGORIES.contains(article.getCategory().toUpperCase())) {
+        throw new InvalidInputException(
+            String.format("Found unsupported article category: '%s'", article.getCategory()));
+      }
+
+      existingArticle.setCategory(article.getCategory().toUpperCase());
+    }
+
+    if (article.getColor() != null) {
+      existingArticle.setColor(article.getColor());
+    }
+
+    if (article.getBrand() != null) {
+      existingArticle.setBrand(article.getBrand());
+    }
+
+    if (article.getSize() != null) {
+      existingArticle.setSize(article.getSize());
+    }
+
+    if (article.getSeasons() != null) {
+      for (String season : article.getSeasons()) {
+        if (!Constants.SEASONS.contains(season.toUpperCase())) {
+          throw new InvalidInputException(
+              String.format("Found unsupported season: '%s'", season.toUpperCase()));
+        }
+      }
+
+      List<String> upperCaseSeasons =
+          article.getSeasons().stream()
+              .map(s-> {
+                          String season = s.toUpperCase();
+                          return season;
+                        })
+              .collect(Collectors.toList());
+
+      existingArticle.setSeasons(upperCaseSeasons);
     }
 
     return articleRepository.save(existingArticle);

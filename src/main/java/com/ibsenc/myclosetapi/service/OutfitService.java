@@ -1,5 +1,7 @@
 package com.ibsenc.myclosetapi.service;
 
+import com.ibsenc.myclosetapi.data.Constants;
+import com.ibsenc.myclosetapi.exceptions.InvalidInputException;
 import com.ibsenc.myclosetapi.exceptions.OutfitNotFoundException;
 import com.ibsenc.myclosetapi.exceptions.ResourceNotFoundException;
 import com.ibsenc.myclosetapi.model.Outfit;
@@ -41,6 +43,16 @@ public class OutfitService {
     // Prevents setting of articles in create endpoint
     newOutfit.setArticleIds(new ArrayList<>());
 
+    List<String> upperCaseSeasons =
+        newOutfit.getSeasons().stream()
+            .map(s-> {
+              String season = s.toUpperCase();
+              return season;
+            })
+            .collect(Collectors.toList());
+
+    newOutfit.setSeasons(upperCaseSeasons);
+
     return outfitRepository.save(newOutfit);
   }
 
@@ -71,6 +83,14 @@ public class OutfitService {
       existingOutfit.setDescription(outfit.getDescription());
     }
 
+    if (outfit.getOccasion() != null) {
+      existingOutfit.setOccasion(outfit.getOccasion());
+    }
+
+    if (outfit.getStyle() != null) {
+      existingOutfit.setStyle(outfit.getStyle());
+    }
+
     if (outfit.getImageFileNames() != null) {
       for (String imageFileName : outfit.getImageFileNames()) {
         imageRepository.getImage(imageFileName);
@@ -84,6 +104,26 @@ public class OutfitService {
         articleService.getArticle(articleId);
       }
       existingOutfit.setArticleIds(outfit.getArticleIds());
+    }
+
+    // Validates seasons
+    if (outfit.getSeasons() != null) {
+      for (String season : outfit.getSeasons()) {
+        if (!Constants.SEASONS.contains(season.toUpperCase())) {
+          throw new InvalidInputException(
+              String.format("Found unsupported season: '%s'", season.toUpperCase()));
+        }
+      }
+
+      List<String> upperCaseSeasons =
+          outfit.getSeasons().stream()
+              .map(s-> {
+                String season = s.toUpperCase();
+                return season;
+              })
+              .collect(Collectors.toList());
+
+      existingOutfit.setSeasons(upperCaseSeasons);
     }
 
     return outfitRepository.save(existingOutfit);

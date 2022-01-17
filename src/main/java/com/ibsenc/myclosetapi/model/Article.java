@@ -16,13 +16,27 @@ import lombok.Data;
 public class Article {
 
   @Id
-  String id;
+  private String id;
+
   @NotBlank(message = "Name is required.")
-  String name;
+  private String name;
+
   @NotNull(message = "Description cannot be null.")
-  String description;
+  private String description;
+
   @Size(message = "Articles can have at most 4 images.", max = 4)
   @ElementCollection
   @NotNull(message = "ImageFileNames field cannot be null.")
   private List<String> imageFileNames;
+
+  @NotNull(message = "Category cannot be null.")
+  private String category;
+
+  private String color;
+  private String brand;
+  private String size;
+
+  @Size(message = "Articles can have at most 4 seasons.", max = 4)
+  @ElementCollection
+  private List<String> seasons;
 }

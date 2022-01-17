@@ -45,10 +45,7 @@ public class OutfitService {
 
     List<String> upperCaseSeasons =
         newOutfit.getSeasons().stream()
-            .map(s-> {
-              String season = s.toUpperCase();
-              return season;
-            })
+            .map(s-> s.toUpperCase())
             .collect(Collectors.toList());
 
     newOutfit.setSeasons(upperCaseSeasons);
@@ -117,10 +114,7 @@ public class OutfitService {
 
       List<String> upperCaseSeasons =
           outfit.getSeasons().stream()
-              .map(s-> {
-                String season = s.toUpperCase();
-                return season;
-              })
+              .map(s-> s.toUpperCase())
               .collect(Collectors.toList());
 
       existingOutfit.setSeasons(upperCaseSeasons);

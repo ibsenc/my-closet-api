@@ -47,10 +47,7 @@ public class ArticleService {
 
     List<String> upperCaseSeasons =
         newArticle.getSeasons().stream()
-            .map(s-> {
-              String season = s.toUpperCase();
-              return season;
-            })
+            .map(s-> s.toUpperCase())
             .collect(Collectors.toList());
 
     newArticle.setSeasons(upperCaseSeasons);
@@ -124,10 +121,7 @@ public class ArticleService {
 
       List<String> upperCaseSeasons =
           article.getSeasons().stream()
-              .map(s-> {
-                          String season = s.toUpperCase();
-                          return season;
-                        })
+              .map(s-> s.toUpperCase())
               .collect(Collectors.toList());
 
       existingArticle.setSeasons(upperCaseSeasons);

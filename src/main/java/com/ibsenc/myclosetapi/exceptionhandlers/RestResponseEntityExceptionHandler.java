@@ -1,7 +1,9 @@
 package com.ibsenc.myclosetapi.exceptionhandlers;
 
+import com.ibsenc.myclosetapi.data.InvalidInputResponse;
 import com.ibsenc.myclosetapi.data.ResourceNotFoundResponse;
 import com.ibsenc.myclosetapi.data.ValidationViolationResponse;
+import com.ibsenc.myclosetapi.exceptions.InvalidInputException;
 import com.ibsenc.myclosetapi.exceptions.ResourceNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +24,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+  /**
+   * Handles InvalidInputExceptions which can be thrown when there is invalid content in the payload.
+   */
+  @ExceptionHandler(value = {InvalidInputException.class})
+  protected ResponseEntity<Object> handleInvalidInput(InvalidInputException e) {
+    return new ResponseEntity<>(new InvalidInputResponse(e.getMessage()),
+        HttpStatus.BAD_REQUEST);
+  }
 
   /**
    * Handles ConstraintViolationExceptions which can be thrown when creating or updating a
@@ -49,6 +60,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
   @ExceptionHandler(value = {ResourceNotFoundException.class})
   protected ResponseEntity<ResourceNotFoundResponse> handleNotFound(ResourceNotFoundException e) {
     return new ResponseEntity<>(new ResourceNotFoundResponse(e.getMessage()),
-        HttpStatus.BAD_REQUEST);
+        HttpStatus.NOT_FOUND);
   }
 }

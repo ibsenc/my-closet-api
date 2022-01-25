@@ -1,0 +1,1 @@
+psql -U camille -d mycloset -q -f "schemas/drop_tables.sql"

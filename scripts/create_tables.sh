@@ -1,0 +1,1 @@
+psql -U camille -d mycloset -q -f "schemas/article_table.sql" -f "schemas/outfit_table.sql"

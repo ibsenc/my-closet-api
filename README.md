@@ -14,6 +14,15 @@ To view Swagger documentation locally, visit: http://localhost:8080/swagger-ui.h
 ### To run:
 `./gradlew bootrun`
 
-## How to access PostgreSQL DB locally
+## PostgreSQL
+### How to access PostgreSQL DB locally:
 `psql --host=localhost --port=5432 --username=YOUR_USERNAME --dbname=postgres --password`
 `\c mycloset`
+
+### Create Tables
+Run the following command in the terminal to generate the necessary tables in PostgreSQL:
+`sh scripts/create_tables.sh`
+
+### Drop All Tables
+Run the following command in the terminal to drop all tables in PostgreSQL:
+`sh scripts/drop_tables.sh`

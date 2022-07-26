@@ -4,10 +4,9 @@
 A Spring Boot server with an API for closet management. Users can create, view, and store outfit and article resources. Utilizes image-service to store images of articles/outfits using Amazon S3 and stores object attributes using PostgreSQL.
 
 ## Documentation:
-To view Swagger documentation locally, visit: http://localhost:8080/swagger-ui.html#/
+To view the Swagger documentation locally, run the server and visit: http://localhost:8080/swagger-ui.html#/
 
-
-## Starting Spring Boot server:
+## Starting the Spring Boot server:
 ### To clean:
 `./gradlew clean`
 

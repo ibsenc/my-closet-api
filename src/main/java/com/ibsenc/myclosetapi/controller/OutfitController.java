@@ -41,7 +41,7 @@ public class OutfitController {
     MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
     headers.set("Content-Type", "application/json");
 
-    return new ResponseEntity("{\"pong\": 123}", headers, HttpStatus.CREATED);
+    return new ResponseEntity("{\"pong\": 123}", headers, HttpStatus.OK);
   }
 
   @SneakyThrows

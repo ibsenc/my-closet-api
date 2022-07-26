@@ -36,7 +36,7 @@ public class ArticleController {
     MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
     headers.set("Content-Type", "application/json");
 
-    return new ResponseEntity("{\"pong\": 123}", headers, HttpStatus.CREATED);
+    return new ResponseEntity("{\"pong\": 123}", headers, HttpStatus.OK);
   }
 
   @PostMapping
@@ -59,7 +59,9 @@ public class ArticleController {
   @SneakyThrows
   @PatchMapping("/{id}")
   public ResponseEntity<Article> updateArticle(@RequestBody Article article) {
-    return new ResponseEntity<>(articleService.updateArticle(article), HttpStatus.OK);
+    MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+    headers.set("Content-Type", "application/json");
+    return new ResponseEntity<>(articleService.updateArticle(article), headers, HttpStatus.OK);
   }
 
   /**

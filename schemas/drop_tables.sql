@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS article_image_file_names CASCADE;
+DROP TABLE IF EXISTS article_seasons CASCADE;
+DROP TABLE IF EXISTS articles CASCADE;
+DROP TABLE IF EXISTS outfit_article_ids CASCADE;
+DROP TABLE IF EXISTS outfit_image_file_names CASCADE;
+DROP TABLE IF EXISTS outfit_seasons CASCADE;
+DROP TABLE IF EXISTS outfits CASCADE;

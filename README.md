@@ -6,6 +6,9 @@ A Spring Boot server with an API for closet management. Users can create, view, 
 ## Documentation:
 To view the Swagger documentation locally, run the server and visit: http://localhost:8080/swagger-ui.html#/
 
+## Figma Design:
+[MyCloset Project](https://www.figma.com/file/zruecashcVdPQav36pW8aY/MyCloset-App?node-id=0%3A1&t=ZtTwWu3NJ9I6Eeks-1)
+
 ## Starting the Spring Boot server:
 ### To clean:
 `./gradlew clean`
@@ -14,7 +17,7 @@ To view the Swagger documentation locally, run the server and visit: http://loca
 `./gradlew bootrun`
 
 ## PostgreSQL
-### How to access PostgreSQL DB locally:
+### To Access PostgreSQL DB Locally:
 `psql --host=localhost --port=5432 --username=YOUR_USERNAME --dbname=postgres --password`
 `\c mycloset`
 
